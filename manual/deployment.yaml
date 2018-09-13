@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: javazone
+  name: javazone
+  namespace: default
+spec:
+  replicas: 10
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: javazone
+  template:
+    metadata:
+      labels:
+        app: javazone
+    spec:
+      containers:
+      - image: eu.gcr.io/cognite-experiments/javazone:0.0.1
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 1180
+          initialDelaySeconds: 1
+          periodSeconds: 3
+        name: javazone
+        ports:
+        - containerPort: 1180
